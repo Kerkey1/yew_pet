@@ -1,46 +1,32 @@
 use yew::prelude::*;
+use yew_router::*;
+use crate::component::Header;
+use crate::routes::switch;
+use crate::routes::Route;
 
-enum Msg {
-    AddOne,
-}
+pub enum Msg {}
 
-pub struct App {
-    value: i64,
-}
+pub struct App;
 
 impl Component for App {
     type Message = Msg;
     type Properties = ();
 
     fn create(_ctx: &Context<Self>) -> Self {
-        Self {
-            value: 0,
-        }
+        Self
     }
 
-    fn update(&mut self, _ctx: &Context<Self>, msg: Self::Message) -> bool {
-        match msg {
-            Msg::AddOne => {
-                self.value += 1;
-                // the value has changed so we need to
-                // re-render for it to appear on the page
-                true
-            }
-        }
-    }
+    fn update(&mut self, _ctx: &Context<Self>, _msg: Self::Message) -> bool { true }
 
     fn view(&self, ctx: &Context<Self>) -> Html {
-        // This gives us a component's "`Scope`" which allows us to send messages, etc to the component.
-        let link = ctx.link();
+        let _link = ctx.link();
         html! {
-            <div>
-                <button onclick={link.callback(|_| Msg::AddOne)}>{ "+1" }</button>
-                <p>{ self.value }</p>
-            </div>
+            <>
+             <BrowserRouter>
+            <Header />
+            <Switch<Route> render={Switch::render(switch)} />
+            </BrowserRouter>
+            </>
         }
     }
-}
-
-fn main() {
-    yew::start_app::<App>();
 }
